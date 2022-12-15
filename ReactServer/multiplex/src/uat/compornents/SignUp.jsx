@@ -1,6 +1,6 @@
 
 import { useState } from "react"
-import {userLogin} from 'uat/api'
+import {userSignup} from 'uat/api'
 
 const SignUp = () =>{
 
@@ -17,9 +17,9 @@ const SignUp = () =>{
         e.preventDefault()
         const request = {email, password, nickname}
         alert(`사용자 이름 : ${JSON.stringify(request)}`)
-        userLogin(request)
+        userSignup(request)
         .then((res) => {
-            console.log(`response is ${res}`)
+            console.log(`response is ${res.config.data}`)
             localStorage.setItem('token', JSON.stringify(res.config.data))
         })
         .catch((err)=>{
