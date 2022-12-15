@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 from keras.saving.save import load_model
 from sklearn import datasets
@@ -15,10 +17,12 @@ Classify iris plants into three species in this classic dataset
 class IrisService(object):
     def __init__(self):
         global model, graph, target_names
-        model = load_model('./save/iris_model.h5')
+        model = load_model(os.path.join(os.path.abspath("./iris/save"), "iris_model.h5"))
         target_names = datasets.load_iris().target_names
 
+
     def hook(self):
+
         ls = [5,5,5,5]
         self.service_model(ls)
 

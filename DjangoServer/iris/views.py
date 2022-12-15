@@ -1,8 +1,10 @@
 from django.http import JsonResponse
+from matplotlib import pyplot as plt
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import JSONParser
 from tensorboard.compat import tf
 
+from iris.fashion_service import FashionService
 from iris.iris_service import IrisService
 
 
@@ -30,3 +32,14 @@ def iris(request):
     elif result == 2:
         result = 'virginica / 버지니카'
     return JsonResponse({'result' : result})
+
+
+@api_view(['POST'])
+@parser_classes([JSONParser])
+def fashion(request):
+    data = request.data
+    test_num = tf.constant(int(data['testNum']))
+    print(f"type 테스트 : {type(data['testNum'])}")
+    print(f'테스트 넘버 : {type(test_num)}')
+    result = FashionService().service_model(test_num)
+    return JsonResponse({'result' : str(result)})

@@ -13,3 +13,16 @@ def login(request):
     print(f'넘어온 이메일 : {email}')
     print(f'넘어온 비밀번호 : {password}')
     return JsonResponse({'로그인 결과': '성공 !'})
+
+@api_view(['POST'])
+@parser_classes([JSONParser])
+def signup(request):
+    user_info = request.data
+    email = user_info['email']
+    password = user_info['password']
+    nickname = user_info['nickname']
+    print(f'리엑트에서 보낸 데이터: {user_info}')
+    print(f'넘어온 이메일 : {email}')
+    print(f'넘어온 비밀번호 : {password}')
+    print(f'넘어온 닉네임 : {nickname}')
+    return JsonResponse({'로그인 결과': '성공 !'})
