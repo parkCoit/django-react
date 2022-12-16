@@ -16,8 +16,8 @@ const Stroke = () =>{
 
     const onGetClick = e => {
         e.preventDefault()
-        const request = {SepalLengthCm, SepalWidthCm,
-            PetalLengthCm, PetalWidthCm}
+        const request = [SepalLengthCm, SepalWidthCm,
+            PetalLengthCm, PetalWidthCm]
         alert(`정보 : ${JSON.stringify(request)}`)
         getiris(request)
         .then((response) => {

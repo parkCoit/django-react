@@ -14,9 +14,23 @@ from iris.iris_service import IrisService
 @parser_classes([JSONParser])
 def iris(request):
     if request.method == 'GET':
-        print(f" ##### GET at Here React ID is {request.body}#####")
-        return JsonResponse({
-            'result': request.body})
+        print(f" ##### GET at Here React ID is {request.GET['req']} and {request.GET}#####")
+        print(f"##### 아아아아아 {list(request.GET['req'])}")
+        a = list(request.GET['req'])
+        print(type(a))
+        a.remove(',')
+        a.remove(',')
+        a.remove(',')
+        a = [int(i) for i in a]
+        print(f'##########################{a}')
+        result = IrisService().service_model(a)
+        if result == 0:
+            result = 'setosa / 부채붓꽃'
+        elif result == 1:
+            result = 'versicolor / 버시칼라 '
+        elif result == 2:
+            result = 'virginica / 버지니카'
+        return JsonResponse({'result' : result})
     elif request.method == 'POST':
         user_info = request.data
         sepalLengthCm = tf.constant(float(user_info['SepalLengthCm']))
@@ -47,7 +61,7 @@ def iris(request):
 @parser_classes([JSONParser])
 def fashion(request):
     if request.method == 'GET':
-        print(f" ##### GET at Here React ID is {request.GET['id']}#####")
+        print(f" ##### GET at Here React ID is {request.GET['id']} and {request.GET}#####")
         return JsonResponse({
             'result': FashionService().service_model(int(request.GET['id']))})
     elif request.method == 'POST':
