@@ -11,7 +11,7 @@ def MosaicLambda(*params):
     ds = Dataset()
     cmd = params[0]
     target = params[1]
-    ds.context = "C:/Users/bitcamp/PycharmProjects/flaskProject/static/data/dam/mosaic/"
+    ds.context = "C:/Users/bitcamp/django-react/DjangoServer/multiplex/data/"
     if cmd == "IMAGE_READ_FOR_CV":
         return (lambda x: cv.imread(f'{ds.context}{x}'))(target)
     elif cmd == "IMAGE_READ_FOR_CV_PLT":

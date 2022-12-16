@@ -9,7 +9,7 @@ from multiplex.lambdas import MosaicLambda
 from multiplex.dataset import Dataset
 
 ds = Dataset()
-ds.context = "C:/Users/bitcamp/PycharmProjects/flaskProject/static/data/dam/mosaic/"
+ds.context = "C:/Users/bitcamp/django-react/DjangoServer/multiplex/data/"
 Lenna = "Lenna.png"
 Soccer = "https://docs.opencv.org/4.x/roi.jpg"
 Line = "http://amroamroamro.github.io/mexopencv/opencv_contrib/fast_hough_transform_demo_01.png"
@@ -262,7 +262,7 @@ class LennaController(object):
         print(params[0])
         cat = MosaicLambda("IMAGE_READ_FOR_CV_PLT", params[1])
         mos = Mosaic(cat ,(150,150,200,200),  10)
-        cv.imwrite(f'{Dataset().context}cat-mosaic.png', mos)
+        cv.imwrite(f'{Dataset().context}cat-data.png', mos)
         cv.imshow("CAT MOSAIC", mos)
         cv.waitKey(0)
         cv.destroyAllWindows()

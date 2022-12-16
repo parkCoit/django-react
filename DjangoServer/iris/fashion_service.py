@@ -31,26 +31,26 @@ class FashionService(object):
         (train_images, train_labels), (test_images, test_labels) = keras.datasets.fashion_mnist.load_data()
         predictions = model.predict(test_images)
         predictions_array, true_label, img = predictions[i], test_labels[i], test_images[i]
-        plt.grid(False)
-        plt.xticks([])
-        plt.yticks([])
-        plt.imshow(img, cmap=plt.cm.binary)
+        # plt.grid(False)
+        # plt.xticks([])
+        # plt.yticks([])
+        # plt.imshow(img, cmap=plt.cm.binary)
         predicted_label = np.argmax(predictions_array)
-        if predicted_label == true_label:
-            color = 'blue'
-        else: color = 'red'
-        plt.xlabel('{} {:2.0f}% ({})'.format(
-            class_names[predicted_label],
-            100 * np.max(predictions_array),
-            class_names[true_label]
-        ), color=color)
-        return predicted_label
+        # if predicted_label == true_label:
+        #     color = 'blue'
+        # else: color = 'red'
+        # plt.xlabel('{} {:2.0f}% ({})'.format(
+        #     class_names[predicted_label],
+        #     100 * np.max(predictions_array),
+        #     class_names[true_label]
+        # ), color=color)
+        return class_names[predicted_label]
 
 
 
 
 fashion_menu = ["Exit", #0
-                "hook"] #1
+                "service_model"] #1
 fashion_lambda = {
     "1" : lambda x: x.service_model(),
 }
