@@ -3,7 +3,8 @@ import {Counter, Footer, Navigation2 } from "common"
 import {Login, SignUp} from "uat"
 import {Schedule} from "../../todos"
 import {Stroke2} from "stroke"
-import {Iris2} from "iris"
+import {Iris2} from "dlearn/iris"
+import {Number} from "dlearn/number"
 
 import fashion from 'images/fashion.png'
 
@@ -30,6 +31,7 @@ const Home = () =>{
                         <Route path="/auth/login" element={<Login/>} ></Route>
                         <Route path="/stroke" element={<Stroke2/>} ></Route>
                         <Route path="/iris" element={<Iris2/>} ></Route>
+                        <Route path="/number" element={<Number/>} ></Route>
                     </Routes>
                     
                     </td>

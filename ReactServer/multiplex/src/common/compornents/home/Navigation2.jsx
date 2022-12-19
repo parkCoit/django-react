@@ -26,6 +26,7 @@ const Navigation2 = () => {
         <BottomNavigationAction label="Login" icon={<Link to = "/auth/login"><LocationOnIcon /></Link>} />
         <BottomNavigationAction label="뇌졸중" icon={<Link to = "/stroke"><LocationOnIcon /></Link>} />
         <BottomNavigationAction label="iris" icon={<Link to = "/iris"><LocationOnIcon /></Link>} />
+        <BottomNavigationAction label="number" icon={<Link to = "/number"><LocationOnIcon /></Link>} />
       </BottomNavigation>
     </Box>
   );

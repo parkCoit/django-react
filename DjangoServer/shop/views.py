@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import JSONParser
 from tensorboard.compat import tf
 
-from iris.iris_service import IrisService
+from dlearn.iris.iris_service import IrisService
 
 
 @api_view(['POST'])

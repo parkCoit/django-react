@@ -22,5 +22,5 @@ urlpatterns = [
     path("blog/auth/", include('blog.blog_users.urls')),
     path("mplx/movie", include('multiplex.movies.urls')),
     path("stroke", include('stroke.urls')),
-    path("iris", include("iris.urls")),
+    path("dlearn", include("dlearn.urls")),
 ]
