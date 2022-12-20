@@ -45,10 +45,10 @@ if __name__ == '__main__':
         elif opcode == '+':
             print(f" {a} + {b} = {service.add(a, b)}")
         elif opcode == '-':
-            print(f" {a} + {b} = {service.subtract(a, b)}")
+            print(f" {a} - {b} = {service.subtract(a, b)}")
         elif opcode == '*':
-            print(f" {a} + {b} = {service.multiply(a, b)}")
+            print(f" {a} * {b} = {service.multiply(a, b)}")
         elif opcode == '/':
-            print(f" {a} + {b} = {service.divide(a, b)}")
+            print(f" {a} / {b} = {service.divide(a, b)}")
         else:
             print('존재하지 않는 연산자')

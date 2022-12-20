@@ -5,6 +5,7 @@ import {Schedule} from "../../todos"
 import {Stroke2} from "stroke"
 import {Iris2} from "dlearn/iris"
 import {Number} from "dlearn/number"
+import {NaverMovie} from "webcrawler"
 
 import fashion from 'images/fashion.png'
 
@@ -32,6 +33,7 @@ const Home = () =>{
                         <Route path="/stroke" element={<Stroke2/>} ></Route>
                         <Route path="/iris" element={<Iris2/>} ></Route>
                         <Route path="/number" element={<Number/>} ></Route>
+                         <Route path="/navermovie" element={<NaverMovie/>} ></Route>
                     </Routes>
                     
                     </td>

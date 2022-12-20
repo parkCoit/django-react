@@ -17,6 +17,10 @@ Classify dlearn plants into three species in this classic dataset
 
 class FashionModel(object):
 
+    def __init__(self):
+        global model
+        model = None
+
 
     def create_model(self):
         (train_images, train_labels), (test_images, test_labels) = keras.datasets.fashion_mnist.load_data()

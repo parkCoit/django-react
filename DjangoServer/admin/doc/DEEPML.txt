@@ -93,6 +93,8 @@ The difference lies in the existence of evidence.
 ## 선형회귀(Linear Regression)을 코드로 구현한다.
 핵심키워드: 선형회귀(Linear Regression) 가설(Hypothesis) 비용함수(Cost function)
 
+
+
 ## 시그모이드 함수
 - 시그모이드 함수는 S자형 곡선 또는 시그모이드 곡선을 갖는 수학 함수이다.
 시그모이드 함수의 예시로는 첫 번째 그림에 표시된 로지스틱 함수가 있다.

@@ -27,8 +27,6 @@ def new_number_2d():
     print(df)
 
 if __name__ == '__main__':
-
-    new_fruits_df()
     menus = ['종료','과일', '숫자 2d']
     while True:
         menu = [print(f'{i}. {j}') for i, j in enumerate(menus)]

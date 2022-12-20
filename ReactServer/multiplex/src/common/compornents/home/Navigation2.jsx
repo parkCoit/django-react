@@ -27,6 +27,7 @@ const Navigation2 = () => {
         <BottomNavigationAction label="뇌졸중" icon={<Link to = "/stroke"><LocationOnIcon /></Link>} />
         <BottomNavigationAction label="iris" icon={<Link to = "/iris"><LocationOnIcon /></Link>} />
         <BottomNavigationAction label="number" icon={<Link to = "/number"><LocationOnIcon /></Link>} />
+        <BottomNavigationAction label="navermovie" icon={<Link to = "/navermovie"><LocationOnIcon /></Link>} />
       </BottomNavigation>
     </Box>
   );

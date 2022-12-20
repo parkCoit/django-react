@@ -23,4 +23,5 @@ urlpatterns = [
     path("mplx/movie", include('multiplex.movies.urls')),
     path("stroke", include('stroke.urls')),
     path("dlearn", include("dlearn.urls")),
+    path("webcrawler", include("webcrawler.urls")),
 ]

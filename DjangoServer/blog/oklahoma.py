@@ -1,21 +1,29 @@
+import numpy as np
 import pandas as pd
 from sklearn.preprocessing import OrdinalEncoder
 
-from blog.path import static
-
+OKLAHOMA_MENUS = ["Exit", #0
+                "Spec",#1
+                "Rename",#2
+                "Interval",#3 18세이상만 사용함
+                "Norminal",#4
+                "Target",#5
+                "Partition",#6
+                "미완성: Fit",#7
+                "미완성: Predicate"]#8
 oklahoma_meta = {
-    'id':'아이디', 'gender':'성별', 'age':'나이',
-    'hypertension':'고혈압',
-    'heart_disease':'심장병',
-    'ever_married':'기혼여부',
-    'work_type':'직종',
-    'Residence_type':'거주형태',
-    'avg_glucose_level':'평균혈당',
-    'bmi':'체질량지수',
-    'smoking_status':'흡연여부',
-    'strokes':'뇌졸중'
+    'ACCESS', 'ACR', 'AGEP', 'BATH', 'BDSP', 'BLD', 'CONP', 'COW', 'ELEP',
+       'FESRP', 'FKITP', 'FPARC', 'FSCHP', 'FTAXP', 'GASP', 'HHL', 'HHT',
+       'HINCP', 'LANX', 'MAR', 'MV', 'NRC', 'R18', 'R65', 'RAC1P', 'RMSP',
+       'RWAT', 'SCH', 'SCHL', 'SEX', 'VALP', 'VALP_B1'
 }
-
+oklahoma_menu = {
+    "1" : lambda t: t.spec(),
+    "2" : lambda t: t.rename_meta(),
+    "3" : lambda t: t.interval_variables(),
+    "4" : lambda t: t.norminal_variables(),
+    "5" : lambda t: t.target()
+}
 '''
 <class 'pandas.core.frame.DataFrame'>
 RangeIndex: 5110 entries, 0 to 5109
@@ -33,141 +41,113 @@ Data columns (total 12 columns):
  8   avg_glucose_level  5110 non-null   float64
  9   bmi                4909 non-null   float64
  10  smoking_status     5110 non-null   object 
- 11  strokes             5110 non-null   int64  
+ 11  stroke             5110 non-null   int64  
 dtypes: float64(3), int64(4), object(5)
 memory usage: 479.2+ KB
 None
 '''
-
 class Oklahoma:
 
-    data = f"{static}/data/dam/oklahoma"
-    save = f"{static}/save/dam/oklahoma"
-
     def __init__(self):
-        self.oklahoma = pd.read_csv(f'{self.data}/comb32.csv')
+        self.oklahoma = pd.read_csv('./data/dam/oklahoma/comb32.csv')
         self.my_oklahoma = None
 
     '''
-    1.스펙보기
+    1.스펙보기 
+    id = SERIALNO  
+    이진값 분류 문제
+    okhoust - shape(population(19398), columns(230)) dtype('int64') null 값 0 
     '''
+
     def spec(self):
-        ok = self.oklahoma
-        pd.set_option('display.max_columns', None)
+        pd.set_option('display.max_columns',None) # 전체보기
         pd.set_option('display.max_rows', None)
         print(" --- 1.Shape ---")
-        print(ok.shape)
+        print(self.oklahoma.shape)
         print(" --- 2.Features ---")
-        print(ok.columns)
+        print(self.oklahoma.columns)
         print(" --- 3.Info ---")
-        print(ok.info())
+        print(self.oklahoma.info())
         print(" --- 4.Case Top1 ---")
-        print(ok.head(1))
+        print(self.oklahoma.head(1))
         print(" --- 5.Case Bottom1 ---")
-        print(ok.tail(3))
+        print(self.oklahoma.tail(3))
         print(" --- 6.Describe ---")
-        print(ok.describe())
+        print(self.oklahoma.describe())
         print(" --- 7.Describe All ---")
-        print(ok.describe(include='all'))
-    '''
-    2.한글 메타데이터
-    '''
+        print(self.oklahoma.describe(include='all'))
+
+
     def rename_meta(self):
         self.my_oklahoma = self.oklahoma.rename(columns=oklahoma_meta)
         print(" --- 2.Features ---")
-        print(self.my_oklahoma.columns)
+        print(self.oklahoma.columns)
 
     '''
-    3.타깃변수(=종속변수 dependent, Y값) 설정
-    입력변수(=설명변수, 확률변수, X값)
-    타깃변수명: strokes (=뇌졸중)
-    타깃변수값: 과거에 한 번이라도 뇌졸중이 발병했으면 1, 아니면 0
-    인터벌 = ['나이','평균혈당','체질량지수']
+    3. 타깃변수(=종속변수 dependent, Y값) 설정
+    입력변수(=설명변수, 확률변수,X값)
+    -타깃 변수명 : VALP_B1
+    -타깃 변수값 : 주택이 중위수 이상이면 1, 아니면 0
+    연속형 타깃 변수 회귀 문제
+    -타깃 변수명 : VALP
+    -타깃 변숫값 : 주택가격
     '''
-    def interval(self):
-        t = self.my_oklahoma
-        interval = ['나이','평균혈당','체질량지수']
-        print(f'--- 구간변수 타입 --- \n {t[interval].dtypes}')
-        print(f'--- 결측값 있는 변수 --- \n {t[interval].isna().any()[lambda x: x]}')
-        print(f'체질량 결측비율: {t["체질량지수"].isnull().mean():.2f}')
-        # 체질량 결측비율: 0.03 는 무시한다
+
+    def interval_variables(self):
+        t = self.oklahoma
         pd.options.display.float_format = '{:.2f}'.format
-        print(f'--- 구간변수 기초 통계량 --- \n{t[interval].describe()}')
-        criterion = t['나이'] > 18
-        self.adult_stoke = t[criterion]
-        print(f'--- 성인객체스펙 --- \n{self.adult_stoke.shape}')
-        # 평균혈당 232.64이하와 체질량지수 60.3이하를 이상치로 규정하고 제거함
-        t = self.adult_stoke
-        c1 = t['평균혈당'] <= 232.64
-        c2 = t['체질량지수'] <= 60.3
-        self.adult_stoke = self.adult_stoke[c1 & c2]
-        print(f'--- 이상치 제거한 성인객체스펙 ---\n{self.adult_stoke.shape}')
+        cols1 = ['AGEP', 'BDSP','CONP', 'ELEP', 'GASP', 'HINCP', 'NRC', 'RMSP', 'VALP']
+        print(t[cols1].describe())
+        print(t[cols1].skew())
+        pd.options.display.float_format = '{:.3f}'.format  # CONP 설문 응답자 월 수선비 지출 x
+        print(t['CONP'].value_counts(normalize=True))
+        t.drop('CONP', axis=1, inplace=True)  # CONP 월 수선비 제거
+        c1 = t['ELEP'] <= 500 # 월 전기료
+        c2 = t['GASP'] <= 311 # 월 가스비
+        c3 = t['HINCP'] <= 320000 # 가계 소득
+        t1 = t[c1 & c2 & c3]
+        print(t1.shape)
+        cols2 = ['AGEP', 'BDSP', 'ELEP', 'GASP', 'HINCP', 'NRC', 'RMSP', 'VALP']  # CONP 제거
+        print(t1[cols2].describe())
+        print(t1['VALP_B1'].value_counts(normalize=True))
+        t1.to_csv('C:/Users/bitcamp/django-react/DjangoServer/blog/save/dam/oklahoma/comb32.csv', index=False)
+        print(t1[cols2].corr())  # 구간 변수끼리 상관계수 출력
 
-    '''
-    4.범주형 = ['성별', '심장병', '기혼여부', '직종', '거주형태','흡연여부', '고혈압']
-    '''
 
-    def ratio(self): # 해당 컬럼이 없음
-        pass
-    def norminal(self):
-        t = self.adult_stoke
-        category = ['성별', '심장병', '기혼여부', '직종', '거주형태', '흡연여부', '고혈압']
-        print(f'범주형변수 데이터타입\n {t[category].dtypes}')
-        print(f'범주형변수 결측값\n {t[category].isnull().sum()}')
-        print(f'결측값 있는 변수\n {t[category].isna().any()[lambda x: x]}')# 결측값이 없음
-        t['성별'] = OrdinalEncoder().fit_transform(t['성별'].values.reshape(-1,1))
-        t['기혼여부'] = OrdinalEncoder().fit_transform(t['기혼여부'].values.reshape(-1, 1))
-        t['직종'] = OrdinalEncoder().fit_transform(t['직종'].values.reshape(-1, 1))
-        t['거주형태'] = OrdinalEncoder().fit_transform(t['거주형태'].values.reshape(-1, 1))
-        t['흡연여부'] = OrdinalEncoder().fit_transform(t['흡연여부'].values.reshape(-1, 1))
 
-        self.oklahoma = t
-        self.spec()
-        print(" ### 프리프로세스 종료 ### ")
-        self.oklahoma.to_csv(f"{self.save}/oklahoma.csv")
+    def norminal_variables(self):
+        ok_home = self.oklahoma
+        ok_home['MAR'].value_counts(dropna=False)
+        print(pd.crosstab(ok_home['MAR'], columns='count'))
+        print(pd.crosstab(ok_home['MAR'], ok_home['VALP_B1']))
 
-    def ordinal(self): # 해당 컬럼이 없음
+        self.oklahoma = ok_home
+
+
+    def ordinal_variables(self):
         pass
 
     def target(self):
-        pass
+        df = pd.read_csv('./save/dam/oklahoma/comb32.csv')
+        self.data = df.drop(['VALP_B1'], axis=1)
+        self.target = df['VALP_B1']
+        print(self.data)
+        print(self.target)
 
-    def partition(self):
-        pass
+def my_menu(ls):
+    for i, j in enumerate(ls):
+        print(f"{i}. {j}")
+    return input('메뉴선택: ')
 
-oklahoma_menu = ["종료", #0
-                "데이터구조파악",#1
-                "변수한글화",#2
-                "연속형변수편집",#3 18세이상만 사용함
-                "범주형변수편집",#4
-                "샘플링",#5
-                "모델링",#6
-                "학습",#7
-                "예측"]#8
-oklahoma_lambda = {
-    "1" : lambda x: x.spec(),
-    "2" : lambda x: x.rename_meta(),
-    "3" : lambda x: x.interval_variables(),
-    "4" : lambda x: x.categorical_variables(),
-    "5" : lambda x: x.sampling(),
-    "6" : lambda x: print(" ** No Function ** "),
-    "7" : lambda x: print(" ** No Function ** "),
-    "8" : lambda x: print(" ** No Function ** "),
-
-}
 if __name__ == '__main__':
-    oklahoma = Oklahoma()
+    t = Oklahoma()
     while True:
-        [print(f"{i}. {j}") for i, j in enumerate(oklahoma_menu)]
-        menu = input('메뉴선택: ')
+        menu = my_menu(OKLAHOMA_MENUS)
         if menu == '0':
             print("종료")
             break
         else:
             try:
-                oklahoma_lambda[menu](oklahoma)
-            except KeyError as e:
-                if 'some error message' in str(e):
-                    print('Caught error message')
-                else:
-                    print("Didn't catch error message")
+                oklahoma_menu[menu](t)
+            except KeyError:
+                print(" ### Error ### ")

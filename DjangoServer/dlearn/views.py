@@ -15,13 +15,14 @@ from dlearn.number.number_service import NumberService
 def iris(request):
     if request.method == 'GET':
         print(f" ##### GET at Here React ID is {request.GET['req']} and {request.GET}#####")
-        print(f"##### 아아아아아 {list(request.GET['req'])}")
+        print(f"##### 아아아아아 { [request.GET['req']]}")
+        print(f"##### 아아아아아 {request.GET['req']}")
         a = list(request.GET['req'])
         print(type(a))
         a.remove(',')
         a.remove(',')
         a.remove(',')
-        a = [int(i) for i in a]
+        a = [float(i) for i in a]
         print(f'##########################{a}')
         result = IrisService().service_model(a)
         if result == 0:
