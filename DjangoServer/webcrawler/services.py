@@ -57,23 +57,27 @@ class ScrapServeice(Scrap):
     def naver_movie_review(self):
         if os.path.isfile(savepath):
             naver_csv = pd.read_csv(savepath, header=None, index_col=0)
-            print(naver_csv.index[0])
-            return naver_csv.index[0]
+            ls_movie = list(naver_csv.index)
+            print(ls_movie)
+            rank = [{'rank' : f'{i+1}위 :',
+                     'title' : j} for i, j in enumerate(ls_movie)]
+            print(rank)
+            return rank
         else:
             driver = webdriver.Chrome(driverpath)
             driver.get(naver_url)
             soup = BeautifulSoup(driver.page_source, 'html.parser')
             all_divs = soup.find_all('div', attrs={'class': 'tit3'})
             products = [div.a.string for div in all_divs]
-            print(products)
             df = pd.Series(products)
             df.index = df.index + 1
-            print(df)
             df.to_csv(savepath, na_rep="NaN", header=None, index=None)
             driver.close()
             naver_csv = pd.read_csv(savepath, header=None, index_col=0)
-            print(naver_csv.index[0])
-            return naver_csv.index[0]
+            ls_movie = list(naver_csv.index)
+            rank = [{'rank': f'{i+1}위 :',
+                     'title': j} for i, j in enumerate(ls_movie)]
+            return rank
 
         # diction = {}
         # for i, j in enumerate(products):

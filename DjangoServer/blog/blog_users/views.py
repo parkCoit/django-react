@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import JSONParser
+from blog.blog_users.services import UserServices
 
 
 @api_view(['POST'])
@@ -26,3 +27,9 @@ def signup(request):
     print(f'넘어온 비밀번호 : {password}')
     print(f'넘어온 닉네임 : {nickname}')
     return JsonResponse({'로그인 결과': '성공 !'})
+
+@api_view(['GET'])
+@parser_classes([JSONParser])
+def insertdummy(request):
+    result = UserServices().random_id()
+    return JsonResponse({'data': result})
